@@ -13,6 +13,6 @@ class ConsumerController extends Controller
 
     public function getProducts()
     {
-        return Product::all();
+        return Product::where('published','=',1)->get();
     }
 }

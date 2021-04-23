@@ -1,26 +1,15 @@
 @extends('consumer.layout')
 @section('content')
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <td>Name</td>
-                    <td>Description</td>
-                    <td>Price</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for='product in products'>
-                    <td v-text="product.title"></td>
-                    <td v-text="product.description"></td>
-                    <td v-text="product.price"></td>
-                </tr>
-            </tbody>
-        </table>
+    <div v-for="product in products" >
+        <v-hover v-slot="{hover}" open-delay="200">
+            <v-card color="#FAEBD7" outlined shaped :elevation="hover ? 16 : 2">
+                <v-card-title v-text="product.title"></v-card-title>
+                <v-card-subtitle v-text="product.price"></v-card-subtitle>
+                <v-card-text v-text="product.description"></v-card-text>
+            </v-card>
+        </v-hover>
     </div>
-
 @endsection
-
 @section('vuejs-instance')
     <script>
         Vue.use(vueMoment);
@@ -39,6 +28,5 @@
             },
             vuetify: new Vuetify(),
         })
-
     </script>
 @endsection
