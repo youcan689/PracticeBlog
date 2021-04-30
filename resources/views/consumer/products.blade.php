@@ -6,6 +6,12 @@
                 <v-card-title v-text="product.title"></v-card-title>
                 <v-card-subtitle v-text="product.price"></v-card-subtitle>
                 <v-card-text v-text="product.description"></v-card-text>
+                @auth
+                    <v-btn @click="addCart(product.id)">加入購物車</v-btn>
+                @endauth
+                @guest
+                    <v-btn>請登入後再點選加入購物車</v-btn>
+                @endguest
             </v-card>
         </v-hover>
     </div>
@@ -18,6 +24,7 @@
             data: function() {
                 return {
                     products: [],
+                    cartEnd: [],
                 }
             },
             mounted() {
@@ -25,6 +32,21 @@
                 axios.get('/consumer/products').then(function(response) {
                     self.products = response.data.products;
                 })
+                axios.get('/consumer/getCart').then(function(response) {
+                    self.cartEnd = response.data.cartEnd;
+                })
+            },
+            methods: {
+                addCart: function(id) {
+                    var self = this;
+                    axios.post('/consumer/addCart', {
+                        productId: id
+                    }).then(function(response) {
+                        self.cartEnd = response.data.cart;
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+                },
             },
             vuetify: new Vuetify(),
         })

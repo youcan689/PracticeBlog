@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('user_id');
             $table->integer('cost');
             $table->boolean('is_pay');
-            $table->dateTime('pay_time');
+            $table->dateTime('pay_time')->nullable();
             $table->timestamps();
         });
     }

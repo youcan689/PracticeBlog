@@ -43,10 +43,35 @@
                         <v-spacer></v-spacer>
                     @endif
                 @endforeach
-
+                @guest
+                    <v-btn href="/home">登入</v-btn>
+                @endguest
                 @auth
-                    <v-btn onclick="event.preventDefault();document.getElementById('logout-form').submit();" text>登出</v-btn>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    <v-dialog transition="dialog-top-transition" max-width="600">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn color="primary" v-bind="attrs" v-on="on">我的購買清單</v-btn>
+                        </template>
+                        <template v-slot:default="dialog">
+                            <v-card>
+                                <v-toolbar color="primary" dark>我的購買清單</v-toolbar>
+                                <v-card-text>
+                                    <div class="text-h2 pa-12" v-for="product in cartEnd.products">
+                                        <ol>
+                                            <li>商品名稱:@{{ product . title }}</li>
+                                            <li>商品價格:@{{ product . price }}</li>
+                                        </ol>
+                                    </div>
+                                    <h2>訂單總價格:@{{ cartEnd . cost }}</h2>
+                                </v-card-text>
+                                <v-card-actions class="justify-end">
+                                    <v-btn text @click="dialog.value = false">Close</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </template>
+                    </v-dialog>
+                    </div>
+                    <form action="/logout" method="POST">
+                        <v-btn type="submit">登出</v-btn>
                         @csrf
                     </form>
                 @endauth
